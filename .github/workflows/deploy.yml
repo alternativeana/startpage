@@ -1,11 +1,10 @@
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'config/**'
       - 'Dockerfile'
-      - '.github/workflows/**'
 
 env:
   REGISTRY: 'registry.digitalocean.com/ana-image-repository'
