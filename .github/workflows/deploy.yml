@@ -1,10 +1,11 @@
+name: Deploy startpage to Kubernetes cluster
+
 on:
   push:
     branches:
       - main
-    paths:
-      - 'config/**'
-      - 'Dockerfile'
+    # paths:
+    #   - site/**/*
 
 env:
   REGISTRY: 'registry.digitalocean.com/ana-image-repository'
