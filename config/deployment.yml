@@ -17,12 +17,9 @@ spec:
       containers:
         - name: startpage
           image: <IMAGE>
+          imagePullPolicy: Always
           ports:
-            - name: https
-              protocol: TCP
-              port: 443
-              targetPort: 5000
-
+            - containerPort: 5000
 ---
 apiVersion: v1
 kind: Service
