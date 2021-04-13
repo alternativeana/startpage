@@ -10,6 +10,7 @@ on:
 env:
   REGISTRY: 'registry.digitalocean.com/ana-image-repository'
   IMAGE_NAME: 'startpage'
+  CLUSTER_NAME: 'development'
 
 jobs:
   build_push_deploy:
@@ -40,7 +41,7 @@ jobs:
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/ana-image-repository/startpage:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 anana-cluster-main
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 $CLUSTER_NAME
 
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
