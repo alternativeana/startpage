@@ -62,7 +62,7 @@ spec:
   tls:
     - hosts:
         - startpage.anana.dev
-      secretName: anana-wildcard-cert
+      secretName: anana-wildcard-tls
   rules:
     - host: startpage.anana.dev
       http:
