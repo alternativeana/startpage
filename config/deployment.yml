@@ -29,10 +29,9 @@ metadata:
     app: startpage
   namespace: default
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
-    - name: startpage-port
-      port: 80
+    - port: 80
       targetPort: 5000
       protocol: TCP
   selector:
@@ -41,13 +40,18 @@ spec:
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
+
 metadata:
   name: startpage
+  namespace: default
+
   labels:
     app: startpage
-  namespace: default
+
   annotations:
     kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.allow-http: 'false'
+
 spec:
   tls:
     - hosts:
@@ -58,7 +62,7 @@ spec:
       http:
         paths:
           - path: /
-            pathType: ImplementationSpecific
+            pathType: Prefix
             backend:
               service:
                 name: startpage
