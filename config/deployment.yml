@@ -75,4 +75,3 @@ spec:
                 name: startpage
                 port:
                   name: http
-                  number: 80
