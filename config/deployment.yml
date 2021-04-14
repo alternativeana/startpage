@@ -37,7 +37,8 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 80
+    - name: http
+      port: 80
       targetPort: 5000
       protocol: TCP
   selector:
@@ -73,4 +74,5 @@ spec:
               service:
                 name: startpage
                 port:
+                  name: http
                   number: 80
