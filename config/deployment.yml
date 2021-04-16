@@ -9,6 +9,20 @@ metadata:
 
 ---
 apiVersion: v1
+kind: ServiceAccount
+
+metadata:
+  name: startpage
+  namespace: startpage
+
+  labels:
+    app.kubernetes.io/name: startpage
+
+  imagePullSecrets:
+    - name: ana-image-repository
+
+---
+apiVersion: v1
 kind: Service
 
 metadata:
@@ -64,6 +78,9 @@ spec:
         app.kubernetes.io/version: <TAG>
 
     spec:
+      subdomain: startpage
+      serviceAccountName: startpage
+
       containers:
         - name: startpage
           image: <IMAGE>
