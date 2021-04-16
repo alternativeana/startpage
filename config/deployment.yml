@@ -84,7 +84,6 @@ spec:
 
       securityContext:
         runAsNonRoot: true
-        readonlyRootFileSystem: true
 
 ---
 apiVersion: networking.k8s.io/v1
