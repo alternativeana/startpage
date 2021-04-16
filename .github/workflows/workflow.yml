@@ -22,9 +22,6 @@ jobs:
         name: Set TAG variable to use in future steps
         run: TAG=$(echo $GITHUB_SHA | head -c7) && echo ::set-output name=TAG::$(echo ${TAG})
 
-      - name: Print TAG step output
-        run: echo "${{ steps.get-tag.outputs.TAG }}" && echo ${{ steps.get-tag.outputs.TAG }}
-
       - name: Build container image
         run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):${{ steps.get-tag.outputs.TAG }} -t $(echo $IMAGE_NAME):latest .
 
@@ -39,11 +36,10 @@ jobs:
       - name: Push image to DigitalOcean Container Registry
         run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):${{ steps.get-tag.outputs.TAG }}
 
-      - name: Replace Image name in deployment file
-        run: sed -i 's|<IMAGE>|registry.digitalocean.com/ana-image-repository/startpage:'${{ steps.get-tag.outputs.TAG }}'|' $GITHUB_WORKSPACE/config/deployment.yml
-
-      - name: Replace Image version in deployment file
-        run: sed -i 's|<TAG>|${{ steps.get-tag.outputs.TAG }}|' $GITHUB_WORKSPACE/config/deployment.yml
+      - name: Replace <IMAGE> and <TAG> tokens in deployment file
+        run: |
+          sed -i 's|<IMAGE>|registry.digitalocean.com/ana-image-repository/startpage:'${{ steps.get-tag.outputs.TAG }}'|' $GITHUB_WORKSPACE/config/deployment.yml
+          sed -i 's|<TAG>|${{ steps.get-tag.outputs.TAG }}|' $GITHUB_WORKSPACE/config/deployment.yml
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 $CLUSTER_NAME
