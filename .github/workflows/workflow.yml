@@ -20,10 +20,10 @@ jobs:
 
       - id: get-tag
         name: Set TAG variable to use in future steps
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && echo '::set-output name=TAG::$TAG'
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && echo '::set-output name=TAG::$(echo $TAG)'
 
       - name: Print TAG step output
-        run: echo ${{ steps.get-tag.outputs.TAG }}
+        run: echo "${{ steps.get-tag.outputs.TAG }}" && echo ${{ steps.get-tag.outputs.TAG }}
 
       - name: Build container image
         run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):${{ steps.get-tag.outputs.TAG }} -t $(echo $IMAGE_NAME):latest .
