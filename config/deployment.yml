@@ -18,8 +18,8 @@ metadata:
   labels:
     app.kubernetes.io/name: startpage
 
-  imagePullSecrets:
-    - name: ana-image-repository
+imagePullSecrets:
+  - name: ana-image-repository
 
 ---
 apiVersion: v1
