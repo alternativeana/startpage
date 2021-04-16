@@ -20,7 +20,7 @@ jobs:
 
       - id: get-tag
         name: Set TAG variable to use in future steps
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && echo '::set-output name=TAG::$(echo $TAG)'
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && echo ::set-output name=TAG::$(echo ${TAG})
 
       - name: Print TAG step output
         run: echo "${{ steps.get-tag.outputs.TAG }}" && echo ${{ steps.get-tag.outputs.TAG }}
