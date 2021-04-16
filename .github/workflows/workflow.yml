@@ -1,0 +1,55 @@
+name: Deploy startpage to anana Kubernetes cluster
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: registry.digitalocean.com/ana-image-repository
+  IMAGE_NAME: startpage
+  CLUSTER_NAME: anana-kubernetes
+
+jobs:
+  build_push_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v2
+
+      - id: get-tag
+        name: Set TAG variable to use in future steps
+        run: echo '::set-output name=TAG::$(echo $GITHUB_SHA | head -c7)'
+
+      - name: Print TAG step output
+        run: echo ${{ steps.get-tag.outputs.TAG }}
+
+      - name: Build container image
+        run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):${{ steps.get-tag.outputs.TAG }} -t $(echo $IMAGE_NAME):latest .
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.IMAGE_REGISTRY_TOKEN }}
+
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Push image to DigitalOcean Container Registry
+        run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):${{ steps.get-tag.outputs.TAG }}
+
+      - name: Replace Image name in deployment file
+        run: sed -i 's|<IMAGE>|registry.digitalocean.com/ana-image-repository/startpage:'${{ steps.get-tag.outputs.TAG }}'|' $GITHUB_WORKSPACE/config/deployment.yml
+
+      - name: Replace Image version in deployment file
+        run: sed -i 's|<TAG>|${{ steps.get-tag.outputs.TAG }}|' $GITHUB_WORKSPACE/config/deployment.yml
+
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 $CLUSTER_NAME
+
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
+
+      - name: Verify deployment
+        run: kubectl rollout status deployment/startpage
