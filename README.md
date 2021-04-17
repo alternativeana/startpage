@@ -1,6 +1,6 @@
 # Ana's minimal startpage
 
-[![.github/workflows/deploy.yml](https://github.com/anaoop/startpage/actions/workflows/deploy.yml/badge.svg)](https://github.com/anaoop/startpage/actions/workflows/deploy.yml)
+[![startpage kubernetes deployment](https://github.com/anaoop/startpage/actions/workflows/workflow.yml/badge.svg)](https://github.com/anaoop/startpage/actions/workflows/workflow.yml)
 
 This is a simple, minimal startpage I made to match my desktop's overall theme.
 
