@@ -21,6 +21,9 @@ metadata:
 imagePullSecrets:
   - name: ana-image-repository
 
+secrets:
+  -
+
 ---
 apiVersion: v1
 kind: Service
@@ -119,7 +122,7 @@ spec:
   tls:
     - hosts:
         - startpage.anana.dev
-      secretName: anana-wildcard-tls
+
   rules:
     - host: startpage.anana.dev
       http:
