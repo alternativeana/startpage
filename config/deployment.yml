@@ -21,9 +21,6 @@ metadata:
 imagePullSecrets:
   - name: ana-image-repository
 
-secrets:
-  -
-
 ---
 apiVersion: v1
 kind: Service
