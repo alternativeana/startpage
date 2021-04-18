@@ -118,6 +118,11 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
 
+    # Authentication
+    nginx.ingress.kubernetes.io/auth-signin: https://anana.dev/oauth2/start
+    nginx.ingress.kubernetes.io/auth-url: https://anana.dev/oauth2/auth
+    nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email
+
 spec:
   tls:
     - hosts:
