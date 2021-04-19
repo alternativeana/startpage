@@ -1,14 +1,4 @@
 apiVersion: v1
-kind: Namespace
-
-metadata:
-  name: startpage
-
-  labels:
-    app.kubernetes.io/name: startpage
-
----
-apiVersion: v1
 kind: ServiceAccount
 
 metadata:
