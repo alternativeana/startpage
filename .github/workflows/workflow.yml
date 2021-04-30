@@ -8,7 +8,7 @@ on:
 env:
   REGISTRY: registry.digitalocean.com/ana-image-repository
   IMAGE_NAME: startpage
-  CLUSTER_NAME: anana-kubernetes
+  CLUSTER_NAME: anana-cluster-00
 
 jobs:
   build_push_deploy:
